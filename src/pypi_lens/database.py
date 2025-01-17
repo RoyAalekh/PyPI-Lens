@@ -20,15 +20,22 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Constants
-DB_PATH = "data/pypi_lens.db"
+# Constants
+DB_PATH = os.path.join("data", "pypi_lens.db")
 MODEL_NAME = 'all-MiniLM-L6-v2'
 
 
 class PackageDB:
     def __init__(self, db_path: str = DB_PATH, embedder_model: str = MODEL_NAME):
-        # Setup database path
-        if not db_path.startswith("/"):
-            db_path = os.path.join(os.getcwd(), db_path)
+        # Get absolute path, considering we're already in src/pypi_lens
+        if not os.path.isabs(db_path):
+            project_root = os.getcwd()  # This will be src/pypi_lens
+            db_path = os.path.join(project_root, db_path)
+
+        # Ensure data directory exists
+        data_dir = os.path.dirname(db_path)
+        os.makedirs(data_dir, exist_ok=True)
+
         self.db_path = db_path
         logger.info(f"Using database: {self.db_path}")
 
