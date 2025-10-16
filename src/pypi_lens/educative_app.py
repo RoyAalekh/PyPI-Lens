@@ -76,7 +76,6 @@ class EmbeddingDemo:
 def main():
     st.set_page_config(
             page_title="Embedding Lens",
-            page_icon="🔬",
             layout="wide"
     )
 
@@ -86,10 +85,10 @@ def main():
     st.sidebar.title("Navigation")
     mode = st.sidebar.radio(
             "Choose Section",
-            ["🎯 Introduction", "🔍 Embedding Explorer", "💡 Real-world Examples"]
+            ["Introduction", "Embedding Explorer", "Real-world Examples"]
     )
 
-    if mode == "🎯 Introduction":
+    if mode == "Introduction":
         st.title("Understanding Package Embeddings")
         st.markdown("""
         This tool helps you understand how text descriptions of Python packages
@@ -124,7 +123,7 @@ def main():
                 have similar patterns.
                 """)
 
-    elif mode == "🔍 Embedding Explorer":
+    elif mode == "Embedding Explorer":
         st.title("Embedding Explorer")
 
         col1, col2 = st.columns(2)
