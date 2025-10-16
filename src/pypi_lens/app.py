@@ -6,7 +6,6 @@ import requests
 def create_app():
     st.set_page_config(
         page_title="PyPI Lens",
-        page_icon="🔍",
         layout="wide"
     )
 
@@ -40,26 +39,26 @@ def create_app():
         prev_button, page_info, next_button = st.columns([1, 2, 1])
 
         with prev_button:
-            if st.button("⬅️ Previous", key="prev", disabled=prev_disabled):
+            if st.button("Previous", key="prev", disabled=prev_disabled):
                 st.session_state['page'] = page - 1
 
         with page_info:
             st.markdown(f"<div style='text-align: center; font-size: 1rem;'>Page {page} of {total_pages}</div>", unsafe_allow_html=True)
 
         with next_button:
-            if st.button("Next ➡️", key="next", disabled=next_disabled):
+            if st.button("Next", key="next", disabled=next_disabled):
                 st.session_state['page'] = page + 1
 
         return results[start_index:end_index], total_pages
 
     def main():
-        # Floating Header
+        # Header
         st.markdown(
             """
             <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: white; z-index: 999; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 1rem; text-align: center;">
                 <div style="margin-left: 250px;">
-                    <h1 style="color: #0366d6; margin: 0;">🔍 PyPI Package Search</h1>
-                    <p style="font-size: 1rem; color: #586069; margin: 0;">Easily search and explore Python packages with metadata, tags, and links.</p>
+                    <h1 style="color: #0366d6; margin: 0;">PyPI Package Search</h1>
+                    <p style="font-size: 1rem; color: #586069; margin: 0;">Search and explore Python packages with semantic matching</p>
                 </div>
             </div>
             <div style="height: 120px;"></div>
@@ -75,29 +74,29 @@ def create_app():
             st.markdown(
                 """
                 <div style="text-align: center;">
-                    <h2 style="color: #0366d6;">📊 Database Info</h2>
+                    <h2 style="color: #0366d6;">Database Statistics</h2>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-            st.metric("📦 Total Packages", f"{stats['total_packages']:,}")
+            st.metric("Total Packages", f"{stats['total_packages']:,}")
             if stats['last_updated']:
-                st.metric("⏰ Last Updated", stats['last_updated'].strftime("%Y-%m-%d %H:%M"))
+                st.metric("Last Updated", stats['last_updated'].strftime("%Y-%m-%d %H:%M"))
 
         # Search interface
         query = st.text_input(
-            "🔍 Search packages",
+            "Search packages",
             placeholder="Enter package name, description, or keywords...",
         )
 
         if query:
-            with st.spinner("Searching..."):
+            with st.spinner("Searching packages..."):
                 results = db.search(query)
 
                 if results:
                     results = validate_urls(results)
                     st.markdown(
-                        f"<h3 style='color: #0366d6;'>🔎 Found {len(results)} matching packages</h3>",
+                        f"<h3 style='color: #0366d6;'>Found {len(results)} matching packages</h3>",
                         unsafe_allow_html=True,
                     )
 
@@ -119,7 +118,7 @@ def create_app():
 
                             <div style="color: #586069; font-size: 1rem; font-style: italic; margin-bottom: 1rem;">
                                 <span style="background-color: #28a745; color: white; padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.95rem; font-weight: bold;">Match: {match_score}</span>
-                                <span style="margin-left: 1rem;">🔄 {downloads} downloads</span>
+                                <span style="margin-left: 1rem;">{downloads} downloads</span>
                             </div>
 
                             <div style="margin: 0.5rem 0;">
@@ -127,8 +126,8 @@ def create_app():
                             </div>
 
                             <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
-                                {f'<a href="{result["homepage"]}" target="_blank" style="text-decoration: none; color: #0366d6;">📖 Homepage</a>' if result['homepage_valid'] else '<span style="color: #d73a49;">Homepage not available</span>'}
-                                {f'<a href="{result["repository"]}" target="_blank" style="text-decoration: none; color: #0366d6;">💻 Repository</a>' if result['repo_valid'] else '<span style="color: #d73a49;">Repository not available</span>'}
+                                {f'<a href="{result["homepage"]}" target="_blank" style="text-decoration: none; color: #0366d6;">Homepage</a>' if result['homepage_valid'] else '<span style="color: #d73a49;">Homepage not available</span>'}
+                                {f'<a href="{result["repository"]}" target="_blank" style="text-decoration: none; color: #0366d6;">Repository</a>' if result['repo_valid'] else '<span style="color: #d73a49;">Repository not available</span>'}
                             </div>
                         </div>
                         """
@@ -137,12 +136,12 @@ def create_app():
                 else:
                     st.info("No matching packages found. Try different search terms.")
 
-        # Sticky Footer
+        # Footer
         st.markdown(
             """
             <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: white; z-index: 999; box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); padding: 1rem; text-align: center; font-size: 0.9rem; color: #586069; min-height: 80px;">
                 <div style="margin-left: 250px;">
-                    Made with ❤️ by <a href="https://github.com/RoyAalekh" target="_blank" style="color: #0366d6; text-decoration: none;">AR</a>
+                    Developed by <a href="https://github.com/RoyAalekh" target="_blank" style="color: #0366d6; text-decoration: none;">AR</a>
                 </div>
             </div>
             <div style="height: 80px;"></div>
